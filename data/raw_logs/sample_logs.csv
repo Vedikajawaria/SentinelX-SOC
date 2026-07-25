@@ -1,0 +1,17 @@
+timestamp,user,event,ip,status
+
+2026-07-14 09:00:12,vedika,Login,192.168.1.10,Success
+
+2026-07-14 09:01:45,rahul,Login,192.168.1.22,Failed
+
+2026-07-14 09:02:10,vedika,File Download,192.168.1.10,Success
+
+2026-07-14 09:05:33,unknown,Failed Login,45.77.23.10,Failed
+
+2026-07-14 09:08:55,admin,USB Inserted,192.168.1.100,Success
+
+2026-07-14 09:10:17,rahul,Password Change,192.168.1.22,Success
+
+2026-07-14 09:12:01,unknown,Multiple Login Attempts,45.77.23.10,Failed
+
+2026-07-14 09:15:44,vedika,Logout,192.168.1.10,Success
