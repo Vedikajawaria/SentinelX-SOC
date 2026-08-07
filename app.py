@@ -1,6 +1,5 @@
 import streamlit as st
-import pandas as pd
-
+from components.uploader import upload_dataset
 from detection.predictor import ThreatPredictor
 
 from dashboard.overview import show_overview
@@ -14,65 +13,51 @@ from utils.log_parser import (
     create_features
 )
 
-# --------------------------
-# Page Config
-# --------------------------
+# --------------------------------------------------
+# Page Configuration
+# --------------------------------------------------
 st.set_page_config(
     page_title="SentinelX",
     page_icon="🛡️",
     layout="wide"
 )
 
-# --------------------------
+# --------------------------------------------------
 # Title
-# --------------------------
+# --------------------------------------------------
 st.title("🛡️ SentinelX")
 st.subheader("AI-Powered SOC Detection & Response Platform")
 
 st.divider()
-predictor = ThreatPredictor()
 
-# --------------------------
-# Load Logs
-# --------------------------
-from utils.log_parser import load_logs, clean_logs
-df = load_logs("data/raw_logs/sample_logs.csv")
+# --------------------------------------------------
+# Initialize AI Predictor
+# --------------------------------------------------
+predictor = ThreatPredictor()
+# --------------------------------------------------
+# Dataset Upload
+# --------------------------------------------------
+uploaded_df = upload_dataset()
+# --------------------------------------------------
+# Load & Process Logs
+# --------------------------------------------------
+# --------------------------------------------------
+# Load Dataset
+# --------------------------------------------------
+
+if uploaded_df is not None:
+
+    df = uploaded_df.copy()
+
+else:
+
+    df = load_logs("data/raw_logs/sample_logs.csv")
 
 df = clean_logs(df)
-from utils.log_parser import create_features
-
 df = create_features(df)
-st.subheader("Engineered Features")
-
-st.dataframe(df)
-
-# --------------------------
-# Statistics
-# --------------------------
-total_logs = len(df)
-successful = len(df[df["status"] == "Success"])
-failed = len(df[df["status"] == "Failed"])
-unique_users = df["user"].nunique()
-
-# --------------------------
-from dashboard.overview import show_overview
-
-show_overview(
-    total_logs,
-    successful,
-    failed,
-    unique_users
-)
-show_event_distribution(df)
-
-st.divider()
-
-# --------------------------
-# Security Logs
-# --------------------------
-show_logs(df)
-st.divider()
-
+# --------------------------------------------------
+# Sample Network Flow for AI Prediction
+# --------------------------------------------------
 sample_flow = {
     "Protocol": 6,
     "Flow Duration": 50000,
@@ -88,6 +73,39 @@ sample_flow = {
     "Idle Mean": 2000,
 }
 
+# --------------------------------------------------
+# AI Prediction
+# --------------------------------------------------
 result = predictor.predict(sample_flow)
 
+# --------------------------------------------------
+# Dashboard Overview
+# --------------------------------------------------
+show_overview(df, result)
+
+st.divider()
+
+# --------------------------------------------------
+# Engineered Features
+# --------------------------------------------------
+st.subheader("📊 Engineered Features")
+st.dataframe(df)
+
+# --------------------------------------------------
+# Event Analytics
+# --------------------------------------------------
+show_event_distribution(df)
+
+st.divider()
+
+# --------------------------------------------------
+# Security Logs
+# --------------------------------------------------
+show_logs(df)
+
+st.divider()
+
+# --------------------------------------------------
+# AI Threat Prediction
+# --------------------------------------------------
 show_prediction(result)

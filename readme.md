@@ -13,4 +13,4 @@ SentinelX is an AI-powered Security Operations Center (SOC) platform that collec
 - Plotly
 - SQLite
 - Git
-- GitHub
+- GitHub# SentinelX-SOC

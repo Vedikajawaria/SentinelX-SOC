@@ -11,34 +11,34 @@ SCALER_PATH = "models/scaler.pkl"
 
 
 class ThreatPredictor:
+
     def __init__(self):
         self.model = joblib.load(MODEL_PATH)
         self.scaler = joblib.load(SCALER_PATH)
 
-    def predict(self, flow_data: dict):
+    def predict(self, flow_df: pd.DataFrame):
         """
-        Predict whether a network flow is normal or anomalous.
+        Predict anomalies for one or more network flows.
+
+        Args:
+            flow_df (pd.DataFrame):
+                DataFrame containing network flow features.
 
         Returns:
-            dict
+            tuple:
+                predictions (list)
+                anomaly_scores (list)
         """
 
-        df = pd.DataFrame([flow_data])
-
-        X = df[SELECTED_FEATURES]
+        X = flow_df[SELECTED_FEATURES]
 
         X_scaled = transform_features(X, self.scaler)
 
-        prediction = self.model.predict(X_scaled)[0]
+        predictions = self.model.predict(X_scaled)
 
-        score = self.model.decision_function(X_scaled)[0]
+        anomaly_scores = self.model.decision_function(X_scaled)
 
-        if prediction == -1:
-            label = "Anomaly"
-        else:
-            label = "Benign"
-
-        return {
-            "prediction": label,
-            "anomaly_score": round(float(score), 4)
-        }
+        return (
+            predictions.tolist(),
+            anomaly_scores.tolist(),
+        )
