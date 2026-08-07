@@ -48,7 +48,7 @@ SentinelX-SOC
 └── tests/
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 ```text
               Network Traffic Logs
@@ -94,7 +94,8 @@ SentinelX-SOC
 - Reports
 - Threat Intelligence
 
-##Screenshots
+## Screenshots
+
 <img width="1917" height="843" alt="image" src="https://github.com/user-attachments/assets/e2e15535-7568-4ab2-8fdd-17b3b8a02bc1" />
 <img width="1917" height="551" alt="image" src="https://github.com/user-attachments/assets/78d1c671-7c72-43cc-9053-e35be045ad99" />
 <img width="1917" height="718" alt="image" src="https://github.com/user-attachments/assets/95673203-75c1-41c9-a6f3-85ef7544f217" />
