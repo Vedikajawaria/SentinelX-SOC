@@ -73,9 +73,8 @@ SentinelX-SOC
          ├── Live Monitoring
          └── Threat Intelligence
 
----
 
-## ⚙️ Workflow
+## Workflow
 
 1. Upload security logs
 2. Preprocess log data
