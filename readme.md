@@ -5,6 +5,9 @@ SentinelX is an AI-powered Security Operations Center (SOC) platform designed to
 The platform combines log analysis, threat detection, and an interactive Streamlit dashboard to help security analysts monitor suspicious activities and gain actionable insights.
 
 ---
+## Problem Statement
+
+Security Operations Centers (SOCs) generate massive volumes of network logs every day, making it difficult for analysts to identify malicious activities quickly. SentinelX leverages Machine Learning to automate threat detection and provide actionable insights through an interactive dashboard, enabling faster and more efficient security monitoring.
 
 ## Features
 
@@ -44,6 +47,31 @@ SentinelX-SOC
 ├── notebooks/
 └── tests/
 ```
+
+## 🏗️ Architecture
+
+```text
+              Network Traffic Logs
+                      │
+                      ▼
+              Data Preprocessing
+                      │
+                      ▼
+             Feature Engineering
+                      │
+                      ▼
+      Isolation Forest Anomaly Detection
+                      │
+                      ▼
+            Threat Classification
+                      │
+                      ▼
+          Streamlit Dashboard (SOC)
+         ├── Executive Summary
+         ├── Threat Analytics
+         ├── Reports
+         ├── Live Monitoring
+         └── Threat Intelligence
 
 ---
 
