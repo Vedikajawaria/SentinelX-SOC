@@ -86,7 +86,7 @@ SentinelX-SOC
 
 ---
 
-## 📊 Dashboard Modules
+##  Dashboard Modules
 
 - Executive Summary
 - Threat Overview
@@ -94,13 +94,6 @@ SentinelX-SOC
 - Reports
 - Threat Intelligence
 
-## Screenshots
-
-<img width="1917" height="867" alt="image" src="https://github.com/user-attachments/assets/ddb94e93-7092-40bd-8448-bd0b93c99410" />
-
-
-
----
 
 ## 🛠 Future Improvements
 
