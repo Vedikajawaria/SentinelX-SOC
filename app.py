@@ -1,4 +1,6 @@
 import streamlit as st
+import pandas as pd
+
 from components.uploader import upload_dataset
 from detection.predictor import ThreatPredictor
 
@@ -10,12 +12,13 @@ from dashboard.threat_details import show_prediction
 from utils.log_parser import (
     load_logs,
     clean_logs,
-    create_features
+    create_features,
 )
 
 # --------------------------------------------------
 # Page Configuration
 # --------------------------------------------------
+
 st.set_page_config(
     page_title="SentinelX",
     page_icon="🛡️",
@@ -25,6 +28,7 @@ st.set_page_config(
 # --------------------------------------------------
 # Title
 # --------------------------------------------------
+
 st.title("🛡️ SentinelX")
 st.subheader("AI-Powered SOC Detection & Response Platform")
 
@@ -33,67 +37,73 @@ st.divider()
 # --------------------------------------------------
 # Initialize AI Predictor
 # --------------------------------------------------
+
 predictor = ThreatPredictor()
+
 # --------------------------------------------------
 # Dataset Upload
 # --------------------------------------------------
+
 uploaded_df = upload_dataset()
-# --------------------------------------------------
-# Load & Process Logs
-# --------------------------------------------------
+
 # --------------------------------------------------
 # Load Dataset
 # --------------------------------------------------
 
 if uploaded_df is not None:
-
     df = uploaded_df.copy()
-
 else:
-
     df = load_logs("data/raw_logs/sample_logs.csv")
 
 df = clean_logs(df)
 df = create_features(df)
+
 # --------------------------------------------------
-# Sample Network Flow for AI Prediction
+# Sample Network Flow
 # --------------------------------------------------
-sample_flow = {
-    "Protocol": 6,
-    "Flow Duration": 50000,
-    "Total Fwd Packets": 10,
-    "Total Backward Packets": 8,
-    "Flow Bytes/s": 1000,
-    "Flow Packets/s": 20,
-    "Fwd Packet Length Mean": 150,
-    "Bwd Packet Length Mean": 120,
-    "Flow IAT Mean": 1000,
-    "Flow IAT Std": 250,
-    "Active Mean": 300,
-    "Idle Mean": 2000,
-}
+
+sample_flow = pd.DataFrame([
+    {
+        "Protocol": 6,
+        "Flow Duration": 50000,
+        "Total Fwd Packets": 10,
+        "Total Backward Packets": 8,
+        "Flow Bytes/s": 1000,
+        "Flow Packets/s": 20,
+        "Fwd Packet Length Mean": 150,
+        "Bwd Packet Length Mean": 120,
+        "Flow IAT Mean": 1000,
+        "Flow IAT Std": 250,
+        "Active Mean": 300,
+        "Idle Mean": 2000,
+    }
+])
 
 # --------------------------------------------------
 # AI Prediction
 # --------------------------------------------------
-result = predictor.predict(sample_flow)
+
+predictions, anomaly_scores = predictor.predict(sample_flow)
 
 # --------------------------------------------------
-# Dashboard Overview
+# Executive Summary
 # --------------------------------------------------
-show_overview(df, result)
+
+show_overview(df, predictions, anomaly_scores)
 
 st.divider()
 
 # --------------------------------------------------
 # Engineered Features
 # --------------------------------------------------
+
 st.subheader("📊 Engineered Features")
 st.dataframe(df)
 
 # --------------------------------------------------
 # Event Analytics
 # --------------------------------------------------
+
 show_event_distribution(df)
 
 st.divider()
@@ -101,6 +111,7 @@ st.divider()
 # --------------------------------------------------
 # Security Logs
 # --------------------------------------------------
+
 show_logs(df)
 
 st.divider()
@@ -108,4 +119,5 @@ st.divider()
 # --------------------------------------------------
 # AI Threat Prediction
 # --------------------------------------------------
-show_prediction(result)
+
+show_prediction(predictions, anomaly_scores)
