@@ -1,24 +1,30 @@
-# 🛡️ SentinelX - AI-Powered SOC Detection & Response Platform
+# SentinelX - AI-Powered SOC Detection & Response Platform
 
-SentinelX is an AI-powered Security Operations Center (SOC) platform designed to detect, analyze, and visualize cyber threats using Machine Learning.
+## Overview
 
-The platform combines log analysis, threat detection, and an interactive Streamlit dashboard to help security analysts monitor suspicious activities and gain actionable insights.
+SentinelX is an AI-powered Security Operations Center (SOC) platform designed to detect, analyze, and visualize cyber threats using machine learning. It combines log analysis, anomaly detection, and an interactive Streamlit dashboard to help security analysts identify suspicious network activity and gain actionable security insights.
+
+The platform automates the detection of malicious network behavior using an Isolation Forest model and presents the results through a modular dashboard with analytics and reporting capabilities.
 
 ---
+
 ## Problem Statement
 
-Security Operations Centers (SOCs) generate massive volumes of network logs every day, making it difficult for analysts to identify malicious activities quickly. SentinelX leverages Machine Learning to automate threat detection and provide actionable insights through an interactive dashboard, enabling faster and more efficient security monitoring.
+Modern Security Operations Centers process massive volumes of network traffic logs every day. Manually identifying malicious behavior from these logs is time-consuming and error-prone. SentinelX addresses this challenge by leveraging machine learning to automate anomaly detection and provide security analysts with an intuitive dashboard for monitoring and investigating potential threats.
+
+---
 
 ## Features
 
-- Threat Detection using Machine Learning
-- Interactive Streamlit Dashboard
-- Executive Security Summary
-- Threat Intelligence Dashboard
-- Live Threat Monitoring
-- Security Reports
-- Log Upload & Analysis
-- Threat Analytics & Visualization
+- AI-based network threat detection using Isolation Forest
+- Interactive SOC dashboard built with Streamlit
+- Executive security summary
+- Threat analytics and visualization
+- Live monitoring dashboard
+- Threat intelligence module
+- Security reporting
+- Log upload and analysis
+- Feature engineering and preprocessing pipeline
 
 ---
 
@@ -31,6 +37,51 @@ Security Operations Centers (SOCs) generate massive volumes of network logs ever
 - NumPy
 - Plotly
 - Matplotlib
+- Joblib
+- Git
+- GitHub
+
+---
+
+## Machine Learning Pipeline
+
+- Dataset preprocessing and cleaning
+- Feature engineering
+- Feature scaling using StandardScaler
+- Anomaly detection using Isolation Forest
+- Threat classification
+- Dashboard visualization and reporting
+
+---
+
+## Project Architecture
+
+```
+Network Traffic Logs
+          │
+          ▼
+Data Preprocessing
+          │
+          ▼
+Feature Engineering
+          │
+          ▼
+Feature Scaling
+          │
+          ▼
+Isolation Forest Model
+          │
+          ▼
+Threat Prediction
+          │
+          ▼
+Streamlit Dashboard
+      ├── Executive Summary
+      ├── Threat Analytics
+      ├── Live Monitoring
+      ├── Reports
+      └── Threat Intelligence
+```
 
 ---
 
@@ -39,72 +90,91 @@ Security Operations Centers (SOCs) generate massive volumes of network logs ever
 ```
 SentinelX-SOC
 │
-├── dashboard/
-├── detection/
-├── threat_intelligence/
+├── assets/
 ├── components/
-├── utils/
+├── dashboard/
+├── data/
+├── database/
+├── detection/
 ├── notebooks/
-└── tests/
+├── tests/
+├── threat_intelligence/
+├── utils/
+│
+├── app.py
+├── config.py
+├── requirements.txt
+├── README.md
+└── LICENSE
 ```
-
-## Architecture
-
-```text
-              Network Traffic Logs
-                      │
-                      ▼
-              Data Preprocessing
-                      │
-                      ▼
-             Feature Engineering
-                      │
-                      ▼
-      Isolation Forest Anomaly Detection
-                      │
-                      ▼
-            Threat Classification
-                      │
-                      ▼
-          Streamlit Dashboard (SOC)
-         ├── Executive Summary
-         ├── Threat Analytics
-         ├── Reports
-         ├── Live Monitoring
-         └── Threat Intelligence
-
-
-## Workflow
-
-1. Upload security logs
-2. Preprocess log data
-3. Generate features
-4. Predict malicious activity using ML
-5. Display results in dashboard
-6. Generate reports and analytics
 
 ---
 
-##  Dashboard Modules
+## Workflow
+
+1. Upload or load network traffic logs.
+2. Clean and preprocess the raw data.
+3. Generate features required for anomaly detection.
+4. Scale features using the trained preprocessing pipeline.
+5. Predict anomalous network flows using the Isolation Forest model.
+6. Display predictions, analytics, and security insights through the Streamlit dashboard.
+
+---
+
+## Dashboard Modules
 
 - Executive Summary
-- Threat Overview
+- Threat Analytics
 - Live Monitoring
 - Reports
 - Threat Intelligence
 
+---
 
-## 🛠 Future Improvements
+## Installation
 
-- Real-time log streaming
-- LLM-powered incident summaries
-- SIEM integration
-- Multi-model threat detection
-- Cloud deployment
-- Role-based authentication
+Clone the repository:
+
+```bash
+git clone https://github.com/Vedikajawaria/SentinelX-SOC.git
+```
+
+Navigate to the project directory:
+
+```bash
+cd SentinelX-SOC
+```
+
+Install the required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the application:
+
+```bash
+streamlit run app.py
+```
 
 ---
 
-## 👩‍💻 Author
+## Future Improvements
+
+- Real-time network traffic monitoring
+- LLM-powered incident summarization
+- SIEM integration
+- Multiple machine learning models for threat detection
+- Cloud deployment
+- User authentication and role-based access control
+- Automated alert notifications
+
+---
+
+## Author
 
 Vedika Jawaria
+
+Final-Year B.Tech (Artificial Intelligence & Machine Learning)
+
+GitHub: https://github.com/Vedikajawaria
