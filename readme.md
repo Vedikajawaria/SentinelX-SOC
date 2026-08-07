@@ -66,6 +66,15 @@ SentinelX-SOC
 - Reports
 - Threat Intelligence
 
+##Screenshots
+<img width="1917" height="843" alt="image" src="https://github.com/user-attachments/assets/e2e15535-7568-4ab2-8fdd-17b3b8a02bc1" />
+<img width="1917" height="551" alt="image" src="https://github.com/user-attachments/assets/78d1c671-7c72-43cc-9053-e35be045ad99" />
+<img width="1917" height="718" alt="image" src="https://github.com/user-attachments/assets/95673203-75c1-41c9-a6f3-85ef7544f217" />
+<img width="1917" height="637" alt="image" src="https://github.com/user-attachments/assets/4698062f-9d1d-45c7-8e4d-2b59756fdcde" />
+<img width="1917" height="618" alt="image" src="https://github.com/user-attachments/assets/fbefd3a8-4210-4d7f-8798-d0b9b39ba5e8" />
+<img width="1917" height="580" alt="image" src="https://github.com/user-attachments/assets/e17d927c-d9f6-417b-82aa-f42d344a5ac5" />
+
+
 ---
 
 ## 🛠 Future Improvements
