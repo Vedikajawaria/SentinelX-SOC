@@ -19,7 +19,7 @@ The platform combines log analysis, threat detection, and an interactive Streaml
 
 ---
 
-## 🧠 Tech Stack
+## Tech Stack
 
 - Python
 - Streamlit
@@ -76,12 +76,6 @@ SentinelX-SOC
 - Multi-model threat detection
 - Cloud deployment
 - Role-based authentication
-
----
-
-## 📸 Screenshots
-
-(Add dashboard screenshots here)
 
 ---
 
