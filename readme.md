@@ -31,7 +31,7 @@ The platform combines log analysis, threat detection, and an interactive Streaml
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 SentinelX-SOC
@@ -73,6 +73,7 @@ SentinelX-SOC
 <img width="1917" height="637" alt="image" src="https://github.com/user-attachments/assets/4698062f-9d1d-45c7-8e4d-2b59756fdcde" />
 <img width="1917" height="618" alt="image" src="https://github.com/user-attachments/assets/fbefd3a8-4210-4d7f-8798-d0b9b39ba5e8" />
 <img width="1917" height="580" alt="image" src="https://github.com/user-attachments/assets/e17d927c-d9f6-417b-82aa-f42d344a5ac5" />
+<img width="1917" height="343" alt="image" src="https://github.com/user-attachments/assets/2b4167c7-1ebf-431b-8aa3-ddc66a3937a8" />
 
 
 ---
