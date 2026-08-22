@@ -1,6 +1,24 @@
+# Virtual environment
 venv/
+.venv/
+
+# Python
 __pycache__/
-*.pyc
-models/
-logs/
-.streamlit/
+*.py[cod]
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Large datasets
+database/CICIDS2017/
+data/datasets/*.parquet
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.log

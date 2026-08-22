@@ -46,44 +46,12 @@ predictor = ThreatPredictor()
 
 uploaded_df = upload_dataset()
 
-# --------------------------------------------------
-# Load Dataset
-# --------------------------------------------------
+from utils.preprocessing import load_dataset
 
-if uploaded_df is not None:
-    df = uploaded_df.copy()
-else:
-    df = load_logs("data/raw_logs/sample_logs.csv")
+CICIDS_PATH = "data/datasets/Portscan-Friday-no-metadata.parquet"
 
-df = clean_logs(df)
-df = create_features(df)
-
-# --------------------------------------------------
-# Sample Network Flow
-# --------------------------------------------------
-
-sample_flow = pd.DataFrame([
-    {
-        "Protocol": 6,
-        "Flow Duration": 50000,
-        "Total Fwd Packets": 10,
-        "Total Backward Packets": 8,
-        "Flow Bytes/s": 1000,
-        "Flow Packets/s": 20,
-        "Fwd Packet Length Mean": 150,
-        "Bwd Packet Length Mean": 120,
-        "Flow IAT Mean": 1000,
-        "Flow IAT Std": 250,
-        "Active Mean": 300,
-        "Idle Mean": 2000,
-    }
-])
-
-# --------------------------------------------------
-# AI Prediction
-# --------------------------------------------------
-
-predictions, anomaly_scores = predictor.predict(sample_flow)
+df = load_dataset(CICIDS_PATH)
+predictions, anomaly_scores = predictor.predict(df)
 
 # --------------------------------------------------
 # Executive Summary
