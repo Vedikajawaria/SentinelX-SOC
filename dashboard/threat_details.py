@@ -1,21 +1,43 @@
 import streamlit as st
+import pandas as pd
+
+
+def get_severity(score):
+    """
+    Convert anomaly score into a severity level.
+    """
+
+    if score < -0.5:
+        return "Critical"
+
+    elif score < -0.3:
+        return "High"
+
+    elif score < -0.1:
+        return "Medium"
+
+    else:
+        return "Low"
 
 
 def show_prediction(predictions, anomaly_scores, df):
     """
-    Display the most anomalous network flows.
+    Display AI anomaly detection results,
+    severity distribution, filtering and
+    threat investigation.
     """
 
     st.subheader("🤖 AI Threat Detection")
 
-    # --------------------------------------------------
-    # Basic statistics
-    # --------------------------------------------------
+    # ==================================================
+    # 1. BASIC STATISTICS
+    # ==================================================
 
     total_flows = len(predictions)
 
     threats = sum(
-        1 for prediction in predictions
+        1
+        for prediction in predictions
         if prediction == -1
     )
 
@@ -25,20 +47,25 @@ def show_prediction(predictions, anomaly_scores, df):
         else 0
     )
 
-    # --------------------------------------------------
-    # Overall status
-    # --------------------------------------------------
+    # ==================================================
+    # 2. OVERALL STATUS
+    # ==================================================
 
     if threats == 0:
-        st.success("✅ No Anomalous Network Traffic Detected")
+
+        st.success(
+            "✅ No Anomalous Network Traffic Detected"
+        )
+
     else:
+
         st.error(
             f"🚨 {threats:,} Anomalous Network Flows Detected"
         )
 
-    # --------------------------------------------------
-    # Metrics
-    # --------------------------------------------------
+    # ==================================================
+    # 3. SUMMARY METRICS
+    # ==================================================
 
     c1, c2, c3 = st.columns(3)
 
@@ -57,9 +84,9 @@ def show_prediction(predictions, anomaly_scores, df):
         f"{threat_rate:.2f}%"
     )
 
-    # --------------------------------------------------
-    # Find anomalous flows
-    # --------------------------------------------------
+    # ==================================================
+    # 4. FIND ANOMALOUS FLOWS
+    # ==================================================
 
     threat_indices = [
         i
@@ -68,81 +95,232 @@ def show_prediction(predictions, anomaly_scores, df):
     ]
 
     if not threat_indices:
-        st.info("No anomalous flows detected.")
+
+        st.info(
+            "No anomalous flows detected."
+        )
+
         return
 
-    # --------------------------------------------------
-    # Sort anomalies
-    # Lowest score = most anomalous
-    # --------------------------------------------------
+    # ==================================================
+    # 5. SORT ANOMALIES
+    # ==================================================
+
+    # Lower score = more anomalous
 
     threat_indices = sorted(
         threat_indices,
         key=lambda i: anomaly_scores[i]
     )
 
-    # Show only top 10
-    top_threats = threat_indices[:10]
+    # ==================================================
+    # 6. SEVERITY DISTRIBUTION
+    # ==================================================
 
-    # --------------------------------------------------
-    # Create threat table
-    # --------------------------------------------------
+    st.markdown(
+        "### 🚨 Threat Severity Distribution"
+    )
 
-    threat_data = []
+    critical = 0
+    high = 0
+    medium = 0
+    low = 0
 
-    for i in top_threats:
+    for i in threat_indices:
+
+        severity = get_severity(
+            anomaly_scores[i]
+        )
+
+        if severity == "Critical":
+            critical += 1
+
+        elif severity == "High":
+            high += 1
+
+        elif severity == "Medium":
+            medium += 1
+
+        else:
+            low += 1
+
+    c1, c2, c3, c4 = st.columns(4)
+
+    c1.metric(
+        "🔴 Critical",
+        f"{critical:,}"
+    )
+
+    c2.metric(
+        "🟠 High",
+        f"{high:,}"
+    )
+
+    c3.metric(
+        "🟡 Medium",
+        f"{medium:,}"
+    )
+
+    c4.metric(
+        "🟢 Low",
+        f"{low:,}"
+    )
+
+    # ==================================================
+    # 7. ALERT FILTER
+    # ==================================================
+
+    st.markdown(
+        "### 🔎 Filter Alerts"
+    )
+
+    selected_severity = st.selectbox(
+        "Select severity:",
+        [
+            "All",
+            "Critical",
+            "High",
+            "Medium",
+            "Low"
+        ]
+    )
+
+    # ==================================================
+    # 8. FILTER FLOWS
+    # ==================================================
+
+    filtered_threats = []
+
+    for i in threat_indices:
 
         score = anomaly_scores[i]
 
-        if score < -0.5:
-            severity = "🔴 Critical"
-        elif score < -0.3:
-            severity = "🟠 High"
-        elif score < -0.1:
-            severity = "🟡 Medium"
-        else:
-            severity = "🟢 Low"
+        severity = get_severity(score)
 
-        threat_data.append({
-            "Flow": i + 1,
-            "Anomaly Score": round(score, 4),
-            "Severity": severity
-        })
+        if (
+            selected_severity == "All"
+            or severity == selected_severity
+        ):
 
-    # --------------------------------------------------
-    # Display top threats
-    # --------------------------------------------------
+            filtered_threats.append(i)
 
-    st.markdown("### 🚨 Top 10 Most Anomalous Flows")
+    # ==================================================
+    # 9. FILTER RESULT
+    # ==================================================
+
+    st.write(
+        f"Showing **{len(filtered_threats):,}** "
+        f"matching anomalous flows."
+    )
+
+    if not filtered_threats:
+
+        st.warning(
+            "No anomalous flows match this severity."
+        )
+
+        return
+
+    # ==================================================
+    # 10. CREATE SOC ALERT TABLE
+    # ==================================================
+
+    top_filtered = filtered_threats[:10]
+
+    alert_data = []
+
+    for i in top_filtered:
+
+        flow = df.iloc[i]
+
+        score = anomaly_scores[i]
+
+        severity = get_severity(score)
+
+        alert_data.append(
+            {
+                "Flow": i + 1,
+
+                "Protocol": flow["Protocol"],
+
+                "Flow Duration": round(
+                    flow["Flow Duration"],
+                    2
+                ),
+
+                "Fwd Packets": flow[
+                    "Total Fwd Packets"
+                ],
+
+                "Bwd Packets": flow[
+                    "Total Backward Packets"
+                ],
+
+                "Flow Bytes/s": round(
+                    flow["Flow Bytes/s"],
+                    2
+                ),
+
+                "Flow Packets/s": round(
+                    flow["Flow Packets/s"],
+                    2
+                ),
+
+                "Anomaly Score": round(
+                    score,
+                    4
+                ),
+
+                "Severity": severity
+            }
+        )
+
+    alert_df = pd.DataFrame(
+        alert_data
+    )
+
+    # ==================================================
+    # 11. DISPLAY ALERT TABLE
+    # ==================================================
+
+    st.markdown(
+        "### 🚨 Detected Threat Flows"
+    )
 
     st.dataframe(
-        threat_data,
+        alert_df,
         use_container_width=True,
         hide_index=True
     )
 
-    # --------------------------------------------------
-    # Threat investigation
-    # --------------------------------------------------
+    # ==================================================
+    # 12. THREAT INVESTIGATION
+    # ==================================================
 
-    st.markdown("### 🔍 Investigate a Threat")
+    st.markdown(
+        "### 🔍 Threat Investigation"
+    )
 
     selected_flow = st.selectbox(
         "Select a flow to investigate:",
-        top_threats,
-        format_func=lambda i: f"Flow {i + 1}"
+        top_filtered,
+        format_func=lambda i:
+            (
+                f"Flow {i + 1} "
+                f"| Score: "
+                f"{anomaly_scores[i]:.4f} "
+                f"| "
+                f"{get_severity(anomaly_scores[i])}"
+            )
     )
+
+    # ==================================================
+    # 13. SELECTED FLOW INFORMATION
+    # ==================================================
 
     score = anomaly_scores[selected_flow]
 
-    if score < -0.5:
-        severity = "🔴 Critical"
-    elif score < -0.3:
-        severity = "🟠 High"
-    elif score < -0.1:
-        severity = "🟡 Medium"
-    else:
-        severity = "🟢 Low"
+    severity = get_severity(score)
 
     c1, c2, c3 = st.columns(3)
 
@@ -161,15 +339,36 @@ def show_prediction(predictions, anomaly_scores, df):
         severity
     )
 
-    # --------------------------------------------------
-    # Network flow details
-    # --------------------------------------------------
+    # ==================================================
+    # 14. NETWORK FLOW DETAILS
+    # ==================================================
 
-    st.markdown("### 📡 Network Flow Details")
+    st.markdown(
+        "### 📡 Network Flow Details"
+    )
 
     flow = df.iloc[selected_flow]
 
+    flow_details = flow.to_frame(
+        name="Value"
+    )
+
     st.dataframe(
-        flow.to_frame("Value"),
+        flow_details,
         use_container_width=True
+    )
+
+    # ==================================================
+    # 15. AI ASSESSMENT
+    # ==================================================
+
+    st.markdown(
+        "### 🧠 AI Assessment"
+    )
+
+    st.info(
+        "The Isolation Forest model identified this "
+        "network flow as anomalous because its behavior "
+        "differs from the patterns learned from normal "
+        "network traffic."
     )

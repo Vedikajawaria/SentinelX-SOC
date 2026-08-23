@@ -88,4 +88,4 @@ st.divider()
 # AI Threat Prediction
 # --------------------------------------------------
 
-show_prediction(predictions, anomaly_scores)
+show_prediction(predictions, anomaly_scores, df)
